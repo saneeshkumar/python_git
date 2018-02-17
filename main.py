@@ -1,10 +1,11 @@
-import order_details
+import data_set
 
-order_status = order_details.OrderStatus()
-user = order_details.UserDetails("1", "Saneesh", "Kumar", "22-6-106")
-item = order_details.ItemDetails("1", "iphoneX", "black", 100000)
-order = order_details.OrderDetails( "1", user, item, order_status.New, 3)
+data_set.create_user_details()
+data_set.create_item_details()
 
-order_json = order.create_json()
+order_list=[]
 
-print(order_json)
+for order_id in range(0,100):
+	order_list.append(data_set.create_order(order_id))
+	order_json = order_list[order_id].create_json()
+	print(order_json)

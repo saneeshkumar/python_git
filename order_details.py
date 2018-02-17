@@ -1,5 +1,3 @@
-import json
-
 class OrderStatus:
 	def __init__(self):
 		self.New			= "New"
@@ -18,7 +16,7 @@ class UserDetails:
 
 	def create_json(self):
 		json_str = "\t\t\"UserDetails\": {\n"
-		json_str += "\t\t\t\"id\": \"" + self.id + "\",\n"
+		json_str += "\t\t\t\"id\": \"" + str(self.id) + "\",\n"
 		json_str += "\t\t\t\"first_name\": \"" + self.first_name + "\",\n"
 		json_str += "\t\t\t\"second_name\": \"" + self.second_name + "\",\n"
 		json_str += "\t\t\t\"address\": \"" + self.address + "\"\n"
@@ -34,7 +32,7 @@ class ItemDetails:
 
 	def create_json(self):
 		json_str = "\t\t\"ItemDetails\": {\n"
-		json_str += "\t\t\t\"id\": \"" + self.id + "\",\n"
+		json_str += "\t\t\t\"id\": \"" + str(self.id) + "\",\n"
 		json_str += "\t\t\t\"name\": \"" + self.name + "\",\n"
 		json_str += "\t\t\t\"color\": \"" + self.color + "\",\n"
 		json_str += "\t\t\t\"price\": \"" + str(self.price) + "\"\n"
@@ -53,7 +51,7 @@ class OrderDetails:
 	def create_json(self):
 		json_str = "{\n"
 		json_str += "\t\"OrderDetails\": {\n"
-		json_str += "\t\t\"order_id\": \"" + self.id + "\",\n"
+		json_str += "\t\t\"order_id\": \"" + str(self.id) + "\",\n"
 		json_str += self.user_details.create_json() + ",\n"
 		json_str += self.item_details.create_json() + ",\n"
 		json_str += "\t\t\"status\": \"" + self.status + "\",\n"
