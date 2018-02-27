@@ -2,6 +2,14 @@ led / optimized / DLL files
 __pycache__/
 *.py[cod]
 
+order_details/
+*.json
+
+.idea/
+*.xml
+libraries/
+*.xml
+
 # C extensions
 *.so
 
