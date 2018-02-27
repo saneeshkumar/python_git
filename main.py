@@ -2,13 +2,18 @@ import data_set
 import time
 import json
 import os
+import boto
+
+from boto import kinesis
+from boto.s3.key import Key
+
 
 ORDER_DATA_LOCATION = './order_details/'
 
-from boto import kinesis
-
 KINESIS_STREAM_NAME = 'kinesis_test_stream'
 SHARD_ID = 'shardId-000000000000'
+
+S3_BUCKET_NAME = 'pp-s3-landing'
 
 data_set.create_user_details()
 data_set.create_item_details()
@@ -16,25 +21,19 @@ data_set.create_item_details()
 if not os.path.exists(ORDER_DATA_LOCATION):
     os.makedirs(ORDER_DATA_LOCATION)
 
+s3_connection = boto.connect_s3()
+bucket = s3_connection.get_bucket(S3_BUCKET_NAME)
+
 kinesis = kinesis.connect_to_region("ap-northeast-1")
 
 records = [];
 
-for order_id in range(0, 200):
+for order_id in range(0, 10):
     order = data_set.create_order(order_id)
     order_json = order.create_json()
-    file_name = '{path}order_{order_id}.json'.format(path = ORDER_DATA_LOCATION,order_id=order.id)
-    order_file = open(file_name, "w+")
-    order_file.write(order_json)
-    # record = {'Data': json.dumps(order_json), 'PartitionKey': str(hash(order.user_details.first_name))}
-    # records.append(record)
-    # if order_id % 10 == 0:
-    #     kinesis.put_records(records, KINESIS_STREAM_NAME)
-    #     records = [];
+    file_name = 'order-{order_id}.json'.format(path=ORDER_DATA_LOCATION, order_id=order.id)
+    bucket_key = Key(bucket)
+    bucket_key.key = file_name
+    bucket_key.set_contents_from_string(order_json)
 
-# shard_iter = kinesis.get_shard_iterator(KINESIS_STREAM_NAME, SHARD_ID, "LATEST")["ShardIterator"]
-# while 1 == 1:
-#     out = kinesis.get_records(shard_iter, limit=2)
-#     shard_iter = out["NextShardIterator"]
-#     print(out)
-#     time.sleep(0.2)
+
