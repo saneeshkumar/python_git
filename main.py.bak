@@ -28,13 +28,13 @@ def read_from_stream():
 	records = kinesis_client.get_records( ShardIterator=shard_iterator['ShardIterator'], Limit=100)
 	print (records)
 	print ("-----------------------------")
-	time.sleep(0.2)
+	time.sleep(1)
 
 	while records['MillisBehindLatest'] > 0:
 		records = kinesis_client.get_records( ShardIterator=records['NextShardIterator'], Limit=100)
 		print (records)
 		print ("-----------------------------")
-		time.sleep(0.2)
+		time.sleep(1)
 
 
 if __name__=='__main__':
